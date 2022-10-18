@@ -8,6 +8,9 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:liquibase/master.yaml
+    parameters:
+      appSchema: motorcycle
+      appName: MOTORCYCLE
   jpa:
     show-sql: true
     properties:
