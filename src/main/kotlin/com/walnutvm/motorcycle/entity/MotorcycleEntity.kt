@@ -1,5 +1,6 @@
 package com.walnutvm.motorcycle.entity
 
+import com.walnutvm.motorcycle.model.MotorcycleRepresentation
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.GenericGenerator
 import org.springframework.data.annotation.LastModifiedBy
@@ -20,7 +21,7 @@ class MotorcycleEntity(
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     @Column(name = "id")
-    val id: UUID,
+    var id: UUID? = null,
 
     @Column(name = "vin")
     val vin: String,
@@ -42,5 +43,16 @@ class MotorcycleEntity(
 
     @Column(name = "updated_by")
     @LastModifiedBy
-    val updatedBy: String
-)
+    val updatedBy: String? = null
+){
+    fun toRepresentation(): MotorcycleRepresentation = let {
+        MotorcycleRepresentation(
+            id = id.toString(),
+            vin = vin,
+            make = make,
+            model = model ,
+            purchaseDate
+        )
+            .apply { id = it.id.toString() }
+    }
+}
