@@ -1,16 +1,16 @@
 package com.walnutvm.motorcycle.controller
 
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.walnutvm.motorcycle.model.MotorcycleRepresentation
+import com.walnutvm.motorcycle.service.MotorcycleService
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
 @RequestMapping("motorcycles")
-class MotorcycleController {
+class MotorcycleController (
+    private val motorcycleService: MotorcycleService
+        ){
 
     @GetMapping
     fun getMotocycles(): String{
@@ -18,8 +18,10 @@ class MotorcycleController {
     }
 
     @PostMapping
-    fun addMotorcycles() {
-        //todo implement
+    fun addMotorcycles(@RequestBody motorcycleRepresentation: MotorcycleRepresentation):ResponseEntity<Unit> {
+        println(motorcycleRepresentation)
+        val motorcycle = motorcycleService.createMotorcycle(motorcycleRepresentation)
+        return entityCreatedResponse(motorcycle.id!!)
     }
 
     @PatchMapping

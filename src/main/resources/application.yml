@@ -20,6 +20,8 @@ spring:
           time_zone: UTC
           lob:
             non_contextual_creation: true
-
-
+#logging:
+#  level:
+#    org:
+#      springframework: debug
 
