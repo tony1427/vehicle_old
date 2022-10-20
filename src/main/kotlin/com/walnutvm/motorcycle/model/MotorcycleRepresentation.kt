@@ -9,12 +9,11 @@ import java.time.LocalDate
 @NoArgConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class MotorcycleRepresentation(
-    var id: String? = null,
-    var vin: String,
-    var make: String,
-    var model: String,
-    var purchaseDate: LocalDate
+    var vin: String? = null,
+    var make: String? = null,
+    var model: String? = null,
+    var purchaseDate: LocalDate? = null
 
-) {
-    fun toEntity(): MotorcycleEntity = MotorcycleEntity(vin = vin, make = make, model = model, purchaseDate = purchaseDate)
+) : BaseRepresentation() {
+    fun toEntity(): MotorcycleEntity = MotorcycleEntity(vin = vin!!, make = make!!, model = model!!, purchaseDate = purchaseDate!!)
 }
