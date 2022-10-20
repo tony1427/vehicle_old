@@ -4,6 +4,7 @@ import com.walnutvm.motorcycle.model.MotorcycleRepresentation
 import com.walnutvm.motorcycle.service.MotorcycleService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 
 @RestController
@@ -12,9 +13,9 @@ class MotorcycleController (
     private val motorcycleService: MotorcycleService
         ){
 
-    @GetMapping
-    fun getMotocycles(): String{
-        return "Hello"
+    @GetMapping("/{id}")
+    fun getMotocycles(@PathVariable id: String): MotorcycleRepresentation{
+        return motorcycleService.getMotorcycle(id)
     }
 
     @PostMapping
@@ -24,12 +25,12 @@ class MotorcycleController (
         return entityCreatedResponse(motorcycle.id!!)
     }
 
-    @PatchMapping
+    @PatchMapping("/id")
     fun updateMotocycles(){
         //todo implement
     }
 
-    @DeleteMapping
+    @DeleteMapping("/id")
     fun deleteMotorcycles(){
         //todo implement
     }

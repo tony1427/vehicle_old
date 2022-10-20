@@ -17,11 +17,7 @@ import javax.persistence.Table
 @Entity
 @Table(name = "motorcycle")
 class MotorcycleEntity(
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    @Column(name = "id")
-    var id: UUID? = null,
+
 
     @Column(name = "vin")
     val vin: String,
@@ -33,21 +29,14 @@ class MotorcycleEntity(
     @Column(name = "purchase_date")
     val purchaseDate: LocalDate,
 
-    @Column(name = "created_at", updatable = false)
-    @CreationTimestamp
-    val createdAt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column(name = "updated_at")
-    @LastModifiedDate
-    val updatedAt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column(name = "updated_by")
-    @LastModifiedBy
-    val updatedBy: String? = null
-){
+//    @Column(name = "updated_by")
+//    @LastModifiedBy
+//    val updatedBy: String? = null
+): UpdatableEntity(){
     fun toRepresentation(): MotorcycleRepresentation = let {
         MotorcycleRepresentation(
-            id = id.toString(),
             vin = vin,
             make = make,
             model = model ,
