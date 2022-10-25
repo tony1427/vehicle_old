@@ -1,6 +1,5 @@
 package com.walnutvm.motorcycle.service
 
-import com.github.dozermapper.core.Mapper
 import com.walnutvm.motorcycle.exception.NotFoundException
 import com.walnutvm.motorcycle.model.MotorcycleRepresentation
 import com.walnutvm.motorcycle.repository.MotorcycleRepository
