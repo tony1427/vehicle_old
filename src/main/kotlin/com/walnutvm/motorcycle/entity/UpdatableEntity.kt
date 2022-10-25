@@ -26,6 +26,7 @@ abstract class UpdatableEntity {
     @LastModifiedDate
     val updatedAt: OffsetDateTime = OffsetDateTime.now()
 
+
     override fun equals(other: Any?): Boolean {
         if(this === other) return true
 
