@@ -6,7 +6,6 @@ import com.walnutvm.motorcycle.model.MotorcycleRepresentation
 import com.walnutvm.motorcycle.repository.MotorcycleRepository
 import com.walnutvm.motorcycle.utils.toUUID
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class MotorcycleService (
@@ -21,6 +20,19 @@ class MotorcycleService (
     }
     fun createMotorcycle(motorcycleRepresentation: MotorcycleRepresentation): MotorcycleRepresentation {
         return motorcycleRepository.save(motorcycleRepresentation.toEntity()).toRepresentation()
+    }
+
+    fun updateMotorcycle(id: String, motorcycleRepresentation: MotorcycleRepresentation): MotorcycleRepresentation {
+        val motorcycle = motorcycleRepository.findById(id.toUUID()).orElseThrow { NotFoundException() }
+
+        motorcycle.apply {
+            vin = motorcycleRepresentation.vin
+            make = motorcycleRepresentation.make
+            model = motorcycleRepresentation.model
+            purchaseDate = motorcycleRepresentation.purchaseDate
+        }
+
+        return motorcycleRepository.save(motorcycle).toRepresentation()
     }
 
 

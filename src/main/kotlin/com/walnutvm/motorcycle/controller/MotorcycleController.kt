@@ -9,29 +9,40 @@ import java.util.*
 
 @RestController
 @RequestMapping("motorcycles")
-class MotorcycleController (
+class MotorcycleController(
     private val motorcycleService: MotorcycleService
-        ){
+) {
 
     @GetMapping("/{id}")
-    fun getMotocycles(@PathVariable id: String): MotorcycleRepresentation{
+    fun getMotocycles(@PathVariable id: String): MotorcycleRepresentation {
         return motorcycleService.getMotorcycle(id)
     }
 
     @PostMapping
-    fun addMotorcycles(@RequestBody motorcycleRepresentation: MotorcycleRepresentation):ResponseEntity<Unit> {
+    fun addMotorcycles(@RequestBody motorcycleRepresentation: MotorcycleRepresentation): ResponseEntity<Unit> {
         println(motorcycleRepresentation)
         val motorcycle = motorcycleService.createMotorcycle(motorcycleRepresentation)
         return entityCreatedResponse(motorcycle.id!!)
     }
 
+    @PutMapping("/{id}")
+    fun updateMotocycles(
+        @PathVariable id: String,
+        @RequestBody motorcycleRepresentation: MotorcycleRepresentation
+    ): ResponseEntity<Unit> {
+        println(motorcycleRepresentation)
+
+        motorcycleService.updateMotorcycle(id, motorcycleRepresentation)
+        return entityNoContentResponse()
+    }
+
     @PatchMapping("/id")
-    fun updateMotocycles(){
+    fun updateMotocycles() {
         //todo implement
     }
 
     @DeleteMapping("/id")
-    fun deleteMotorcycles(){
+    fun deleteMotorcycles() {
         //todo implement
     }
 }

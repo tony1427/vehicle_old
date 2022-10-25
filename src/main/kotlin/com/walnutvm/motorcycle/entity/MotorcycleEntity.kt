@@ -20,20 +20,15 @@ class MotorcycleEntity(
 
 
     @Column(name = "vin")
-    val vin: String,
+    var vin: String,
 
-    val make: String,
+    var make: String,
 
-    val model: String,
+    var model: String,
 
     @Column(name = "purchase_date")
-    val purchaseDate: LocalDate,
+    var purchaseDate: LocalDate,
 
-
-
-//    @Column(name = "updated_by")
-//    @LastModifiedBy
-//    val updatedBy: String? = null
 ): UpdatableEntity(){
     fun toRepresentation(): MotorcycleRepresentation = let {
         MotorcycleRepresentation(

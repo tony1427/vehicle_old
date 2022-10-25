@@ -4,16 +4,22 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.walnutvm.motorcycle.config.NoArgConstructor
 import com.walnutvm.motorcycle.entity.MotorcycleEntity
 import java.time.LocalDate
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 
 @NoArgConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class MotorcycleRepresentation(
-    var vin: String? = null,
-    var make: String? = null,
-    var model: String? = null,
-    var purchaseDate: LocalDate? = null
+    @field:Size(max =17)
+    var vin: String,
+    @field:NotNull
+    var make: String,
+    @field:NotNull
+    var model: String,
+    @field:NotNull
+    var purchaseDate: LocalDate
 
 ) : BaseRepresentation() {
-    fun toEntity(): MotorcycleEntity = MotorcycleEntity(vin = vin!!, make = make!!, model = model!!, purchaseDate = purchaseDate!!)
+    fun toEntity(): MotorcycleEntity = MotorcycleEntity(vin, make, model, purchaseDate)
 }
