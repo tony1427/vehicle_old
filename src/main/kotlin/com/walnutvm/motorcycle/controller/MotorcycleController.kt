@@ -19,7 +19,7 @@ class MotorcycleController(
     }
 
     @PostMapping
-    fun addMotorcycles(@RequestBody motorcycleRepresentation: MotorcycleRepresentation): ResponseEntity<Unit> {
+    fun createMotorcycles(@RequestBody motorcycleRepresentation: MotorcycleRepresentation): ResponseEntity<Unit> {
         println(motorcycleRepresentation)
         val motorcycle = motorcycleService.createMotorcycle(motorcycleRepresentation)
         return entityCreatedResponse(motorcycle.id!!)

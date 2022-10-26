@@ -1,17 +1,9 @@
 package com.walnutvm.motorcycle.entity
 
 import com.walnutvm.motorcycle.model.MotorcycleRepresentation
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.GenericGenerator
-import org.springframework.data.annotation.LastModifiedBy
-import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.util.*
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
