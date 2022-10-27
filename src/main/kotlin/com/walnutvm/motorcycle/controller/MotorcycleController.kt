@@ -36,12 +36,14 @@ class MotorcycleController(
         return entityNoContentResponse()
     }
 
-    @PatchMapping("/id")
-    fun updateMotocycles() {
-        //todo implement
+    @PatchMapping("/{id}")
+    fun updateMotocycles(@PathVariable id: String,@RequestBody map: Map<String, String>): ResponseEntity<Unit> {
+        motorcycleService.updateMotorcycle(id, map)
+
+        return entityNoContentResponse()
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     fun deleteMotorcycles() {
         //todo implement
     }
