@@ -1,5 +1,6 @@
 package com.walnutvm.motorcycle.service
 
+import com.github.fge.jsonpatch.JsonPatch
 import com.walnutvm.motorcycle.exception.BadActionException
 import com.walnutvm.motorcycle.exception.NotFoundException
 import com.walnutvm.motorcycle.model.MotorcycleRepresentation
@@ -9,6 +10,7 @@ import com.walnutvm.motorcycle.utils.toUUID
 import org.apache.commons.beanutils.BeanUtilsBean
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 import java.util.stream.Collectors
 import kotlin.reflect.full.declaredMemberProperties
 
@@ -44,7 +46,7 @@ class MotorcycleService(
         return motorcycleRepository.save(motorcycle).toRepresentation()
     }
 
-    fun updateMotorcycle(id: String, map: Map<String, String>) {
+    fun updateMotorcycle(id: String, map: Map<String, String>): MotorcycleRepresentation {
 
         if (map.isEmpty()) {
             throw BadActionException("Map request is empty")
@@ -53,15 +55,36 @@ class MotorcycleService(
         val motorcycle = motorcycleRepository.findById(id.toUUID()).orElseThrow { NotFoundException() }
 
         val properties = applicationFactory.getProperties<MotorcycleRepresentation>()
-        val validateMap = motorcycleServiceHelper.validateMap(map, properties)
+        val validateMapFields = motorcycleServiceHelper.validateRequest(map, properties)
 
-        if (validateMap.first) {
-            throw BadActionException("Fields don't exist ${validateMap.second}")
+        if (validateMapFields.isNotEmpty()) {
+            throw BadActionException("Fields don't exist $validateMapFields")
+        }
+
+        var purchaseDateFromMap = map["purchaseDate"]
+
+        if(purchaseDateFromMap != null){
+            LocalDate.parse(purchaseDateFromMap)
+        }
+
+        motorcycle.apply {
+            vin = map["vin"] ?: motorcycle.vin
+            make = map["make"] ?: motorcycle.make
+            model = map["model"] ?: motorcycle.model
+            if(purchaseDateFromMap != null) {
+                purchaseDate = LocalDate.parse(purchaseDateFromMap)
+            } else {
+                purchaseDate = motorcycle.purchaseDate
+            }
         }
 
         //populate the opp entity and save
 
-        print(motorcycle)
+        return motorcycleRepository.save(motorcycle).toRepresentation()
+    }
+
+    fun patchVehicle(id: String, request: JsonPatch){
+
     }
 
 
@@ -69,24 +92,29 @@ class MotorcycleService(
 
 
 fun main() {
-    val map = mapOf(
-        "1" to "This",
-        "2" to "That",
-        "3" to "the other"
-    )
 
-    println("Keys ${map.keys}")
+    println("Local Date: ${LocalDate.parse(null) ?: "Hey"}")
 
-    val props = MotorcycleRepresentation::class.declaredMemberProperties.stream().map { f -> f.name }
-        .collect(Collectors.toList())
 
-    println("prop: $props")
-    val list = listOf("make1", "model2")
-
-    val difference = props.filterNot { list.contains(it) }
-//    https://www.techiedelight.com/difference-between-two-lists-kotlin/
-    val difference2 = list.filterNot { props.contains(it) }// <- use this
-
-    println("Difference: $difference")
-    println("Difference: $difference2")
+//    val map = mapOf(
+//        "1" to "This",
+//        "2" to "That",
+//        "3" to "the other"
+//    )
+//
+//    println("Keys ${map.keys}")
+//
+//    val props = MotorcycleRepresentation::class.declaredMemberProperties.stream().map { f -> f.name }
+//        .collect(Collectors.toList())
+//
+//    println("prop: $props")
+//    val list = listOf("make1", "model2")
+//
+//    val difference = props.filterNot { list.contains(it) }
+////    https://www.techiedelight.com/difference-between-two-lists-kotlin/
+//    val difference2 = list.filterNot { props.contains(it) }// <- use this
+//
+//    println("Difference: $difference")
+//    println("Difference: $difference2")
+//
 }

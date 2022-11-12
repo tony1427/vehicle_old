@@ -21,8 +21,8 @@ spring:
           lob:
             non_contextual_creation: true
     open-in-view: false
-#logging:
-#  level:
-#    org:
-#      springframework: debug
+logging:
+  level:
+    org:
+      springframework: debug
 

@@ -2,11 +2,13 @@ package com.walnutvm.motorcycle.controller
 
 import com.ninjasquad.springmockk.MockkBean
 import com.walnutvm.motorcycle.controller.ApplicationConstants.MOTORCYCLES
+import com.walnutvm.motorcycle.exception.BadActionException
 import com.walnutvm.motorcycle.exception.NotFoundException
 import com.walnutvm.motorcycle.model.MotorcycleRepresentation
 import com.walnutvm.motorcycle.service.MotorcycleService
 import com.walnutvm.motorcycle.util.asJsonString
 import com.walnutvm.motorcycle.util.createRandomMotorcycle
+import com.walnutvm.motorcycle.util.createRandonVehicleMap
 import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -105,7 +107,32 @@ internal class MotorcycleControllerTest(@Autowired val mockMvc: MockMvc) {
     }
 
     @Test
-    fun testUpdateMotocycles() {
+    fun `update existing vehicle using Patch`() {
+        val vehicle = createRandonVehicleMap()
+        every { motorcycleService.updateMotorcycle("someId", vehicle) }
+            .returns (MotorcycleRepresentation
+                ("vin", "make", "model", LocalDate.now()).apply { id = "someId" })
+
+        mockMvc.perform (
+            MockMvcRequestBuilders.patch("/$MOTORCYCLES/someId")
+                .content(asJsonString(vehicle)).contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNoContent)
+            .andDo(MockMvcResultHandlers.print())
+            .andReturn()
+    }
+
+    @Test
+    fun `update existing vehicle using Patch throws Bad Request`() {
+        val vehicle = createRandonVehicleMap()
+        every { motorcycleService.updateMotorcycle("someId", vehicle) }
+            .throws(BadActionException("Bad Stuff Occurred"))
+
+        mockMvc.perform (
+            MockMvcRequestBuilders.patch("/$MOTORCYCLES/someId")
+                .content(asJsonString(vehicle)).contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest)
+            .andDo(MockMvcResultHandlers.print())
+            .andReturn()
     }
 
     @Test

@@ -4,16 +4,16 @@ import org.springframework.stereotype.Component
 
 @Component
 class MotorcycleServiceHelper {
-    fun validateMap(map: Map<String, String>, properties: List<String>): Pair<Boolean, List<String>> {
+    fun validateRequest(requestMap: Map<String, String>, classFieldNames: List<String>): List<String> {
 
-        val keys = map.keys.toList()
+        val keys = requestMap.keys.toList()
 
-        val difference = keys.filterNot { properties.contains(it) }
+        return keys.filterNot { classFieldNames.contains(it) }
 
-        return if (difference.isEmpty()) {
-            Pair(true, listOf())
-        } else {
-            Pair(false, difference)
-        }
+//        return if (difference.isEmpty()) {
+//            Pair(true, listOf())
+//        } else {
+//            Pair(false, difference)
+//        }
     }
 }

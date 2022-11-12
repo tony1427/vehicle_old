@@ -27,3 +27,12 @@ fun createRandomMotorcycle() = MotorcycleRepresentation(
     randomAlphabetic(20),
     LocalDate.now()
 )
+
+fun createRandonVehicleMap(): Map<String,String>{
+    return mapOf(
+        "vin" to randomNumeric(17),
+        "make" to randomAlphabetic(10),
+        "model" to randomAlphabetic(10),
+        "purchaseDate" to LocalDate.now().toString()
+    )
+}
